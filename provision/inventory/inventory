@@ -1,0 +1,4 @@
+[all]
+k8s-master-1 ansible_ssh_host=10.8.29.2 ansible_ssh_private_key_file=/Users/Yanmin/Learning/kubernetes/.vagrant/machines/k8s-master-1/virtualbox/private_key
+k8s-slave-1 ansible_ssh_host=10.8.29.3 ansible_ssh_private_key_file=/Users/Yanmin/Learning/kubernetes/.vagrant/machines/k8s-slave-1/virtualbox/private_key
+k8s-slave-2 ansible_ssh_host=10.8.29.4 ansible_ssh_private_key_file=/Users/Yanmin/Learning/kubernetes/.vagrant/machines/k8s-slave-2/virtualbox/private_key

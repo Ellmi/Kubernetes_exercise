@@ -9,20 +9,31 @@ Vagrant.configure("2") do |config|
   config.vm.box = "ubuntu/trusty64"
   config.vm.box_check_update = false
 
-  cluster.each_with_index do |(hostname, info), index|
+  cluster.each_with_index do |(hostname, info), index |
 
-    config.vm.define hostname do |cfg|
+    config.vm.define hostname do |node|
 
-      cfg.vm.hostname = hostname
-      cfg.vm.network :private_network, ip: "#{info[:ip]}"
+      node.vm.hostname = hostname
+      node.vm.network :private_network, ip: "#{info[:ip]}"
 
-      config.vm.provider "virtualbox" do |vb|
-
+      node.vm.provider :virtualbox do |vb|
         vb.name = "#{hostname}"
         vb.cpus = info[:cups]
         vb.memory = info[:memory]
+      end
 
+      # provision
+
+      if index == cluster.size - 1
+        node.vm.provision :ansible do |ansible|
+          ansible.limit = "all"
+          # ansible.verbose = "vvv"
+          ansible.playbook = "provision/kubernetes.yml"
+          ansible.inventory_path = "provision/inventory/inventory"
+        end
       end
     end
+
   end
+
 end

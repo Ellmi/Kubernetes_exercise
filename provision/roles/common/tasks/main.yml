@@ -1,0 +1,33 @@
+---
+- name: add google cloud package apt-key
+  apt_key:
+    url: https://packages.cloud.google.com/apt/doc/apt-key.gpg
+    state: present
+  become: yes
+
+- name: add mit package apt-key
+  command: "apt-key adv --recv-keys --keyserver hkp://pgp.mit.edu:80 0xA5D32F012649A5A9"
+  become: yes
+
+- name: add apt repository
+  apt_repository:
+    repo: "{{ item }}"
+    update_cache: yes
+    state: present
+  become: yes
+  with_items:
+    - 'deb http://apt.kubernetes.io/ kubernetes-xenial main'
+    - 'deb http://mirrors.tuna.tsinghua.edu.cn/neurodebian data main' # to fix init-system-helpers version conflict
+    - 'deb http://mirrors.tuna.tsinghua.edu.cn/neurodebian trusty main' # to fix init-system-helpers version conflict
+
+- name: install docker kubeadm kubectl kubernetes-cni
+  apt:
+    name: "{{ item }}"
+    state: present
+    update_cache: yes
+  become: yes
+  with_items:
+    - docker
+    - kubelet
+    - kubectl
+    - kubernetes-cni
