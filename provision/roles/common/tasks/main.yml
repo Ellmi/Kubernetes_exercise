@@ -5,8 +5,11 @@
     state: present
   become: yes
 
+# apt-key adv --recv-keys --keyserver hkp://pgp.mit.edu:80 0xA5D32F012649A5A9
 - name: add mit package apt-key
-  command: "apt-key adv --recv-keys --keyserver hkp://pgp.mit.edu:80 0xA5D32F012649A5A9"
+  apt_key:
+   id: A5D32F012649A5A9
+   keyserver: hkp://pgp.mit.edu:80
   become: yes
 
 - name: add apt repository
